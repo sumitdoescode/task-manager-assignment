@@ -19,12 +19,17 @@ export const PATCH = async (request: NextRequest, { params }: { params: Promise<
         if (!id || !isValidObjectId(id)) {
             return NextResponse.json({ success: false, error: "Invalid Task ID" }, { status: 400 });
         }
-        const task = await Task.findOne({ _id: id, owner: session?.user?.id });
+        const task = await Task.findById(id);
         if (!task) {
-            return NextResponse.json({ success: false, error: "Task not found or you are not authorized to update it" }, { status: 404 });
+            console.error("Toggle task failed: task not found", { id, userId: session.user.id });
+            return NextResponse.json({ success: false, error: "Task not found" }, { status: 404 });
+        }
+        if (task.owner !== session.user.id) {
+            console.error("Toggle task failed: owner mismatch", { id, taskOwner: task.owner, userId: session.user.id });
+            return NextResponse.json({ success: false, error: "You are not authorized to update this task" }, { status: 403 });
         }
         task.isCompleted = !task.isCompleted;
-        // here we have to do this two db queries as we don't know the toggle value at first. if we use findByIdAndUpdate we have to use the $set operator
+        await task.save();
         return NextResponse.json({ success: true, message: task.isCompleted ? "Task completed" : "Task incomplete" }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ success: false, error: error instanceof Error ? error.message : "Failed to toggle task" }, { status: 500 });
@@ -45,11 +50,16 @@ export const DELETE = async (request: NextRequest, { params }: { params: Promise
         if (!id || !isValidObjectId(id)) {
             return NextResponse.json({ success: false, error: "Invalid Task ID" }, { status: 400 });
         }
-        // doing find and delete in one go instead of finding first and then deleting
-        const task = await Task.findOneAndDelete({ _id: id, owner: session?.user?.id });
+        const task = await Task.findById(id);
         if (!task) {
-            return NextResponse.json({ success: false, error: "Task not found or you are not authorized to delete it" }, { status: 404 });
+            console.error("Delete task failed: task not found", { id, userId: session.user.id });
+            return NextResponse.json({ success: false, error: "Task not found" }, { status: 404 });
         }
+        if (task.owner !== session.user.id) {
+            console.error("Delete task failed: owner mismatch", { id, taskOwner: task.owner, userId: session.user.id });
+            return NextResponse.json({ success: false, error: "You are not authorized to delete this task" }, { status: 403 });
+        }
+        await task.deleteOne();
         return NextResponse.json({ success: true, message: "Task deleted successfully" }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ success: false, error: error instanceof Error ? error.message : "Failed to delete task" }, { status: 500 });

@@ -48,7 +48,9 @@ const TaskCardActions = ({ id }: { id: string }) => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={deleteTask}>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={deleteTask} variant={"destructive"}>
+                            Continue
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

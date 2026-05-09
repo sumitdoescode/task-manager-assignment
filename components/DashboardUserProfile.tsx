@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LogoutButton from "@/components/LogoutButton";
 
 const DashboardUserProfile = ({ user }: { user: { name: string; image?: string | null; email: string } }) => {
     return (
@@ -12,6 +13,8 @@ const DashboardUserProfile = ({ user }: { user: { name: string; image?: string |
                 <p className="truncate text-sm font-medium">{user.name}</p>
                 <p className="truncate text-xs text-foreground/60">{user.email}</p>
             </div>
+
+            <LogoutButton />
         </div>
     );
 };
