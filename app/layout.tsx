@@ -32,7 +32,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}>
             <body className="min-h-full flex flex-col">
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-                    <div className="flex min-h-full flex-col">
+                    <div className="flex min-h-screen flex-col">
                         <div className="flex-1">{children}</div>
                         <Footer />
                         <Toaster richColors />

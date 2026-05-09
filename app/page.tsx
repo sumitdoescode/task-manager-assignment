@@ -17,7 +17,7 @@ const highlights = [
 
 export default function Home() {
     return (
-        <main className="min-h-screen bg-[linear-gradient(180deg,var(--background)_0%,color-mix(in_oklab,var(--background)_88%,white)_48%,color-mix(in_oklab,var(--muted)_75%,var(--background))_100%)] text-foreground dark:bg-[linear-gradient(180deg,color-mix(in_oklab,var(--background)_92%,black)_0%,var(--background)_45%,color-mix(in_oklab,var(--card)_82%,var(--background))_100%)]">
+        <main className="bg-background text-foreground">
             <section className="mx-auto flex min-h-[72vh] w-full max-w-6xl items-center px-6 py-20 sm:px-8">
                 <div className="max-w-2xl">
                     <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl">Keep your tasks simple, clear, and under control.</h1>

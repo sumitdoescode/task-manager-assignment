@@ -1,40 +1,28 @@
-import React from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Trash2 } from "lucide-react";
+import { Clock3, RefreshCw, Trash2 } from "lucide-react";
+import type { ITask } from "@/types/task";
 
-const demoTasks = [
-    {
-        id: 1,
-        title: "Plan Monday sprint",
-        description: "Outline the first three tasks for the week.",
-        isCompleted: false,
-    },
-    {
-        id: 2,
-        title: "Design landing page copy",
-        description: "Keep the message short and clear.",
-        isCompleted: true,
-    },
-    {
-        id: 3,
-        title: "Review task flow",
-        description: "Check add, complete, and delete states.",
-        isCompleted: false,
-    },
-];
+dayjs.extend(relativeTime);
 
-const TasksList = () => {
+const TasksList = ({ tasks }: { tasks: ITask[] }) => {
+    if (tasks.length === 0) {
+        return <p className="text-center text-foreground/60">No tasks yet. Add one above!</p>;
+    }
+
     return (
         <section>
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-medium">All Tasks</h2>
-                <span className="text-sm text-foreground/60">{demoTasks.length} tasks</span>
+                <span className="text-sm text-foreground/60">{tasks.length} tasks</span>
             </div>
 
             <div className="space-y-3">
-                {demoTasks.map((task) => (
-                    <div key={task.id} className="rounded-lg border border-border p-4">
+                {tasks.map((task: ITask) => (
+                    <div key={task._id} className="rounded-lg border border-border p-4">
                         <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
                                 <div className="flex items-center gap-3">
@@ -49,6 +37,16 @@ const TasksList = () => {
                                     </Badge>
                                 </div>
                                 <p className="mt-1 text-sm text-foreground/65">{task.description}</p>
+                                <div className="mt-3 flex flex-wrap gap-2 text-xs text-foreground/60">
+                                    <span title={dayjs(task.createdAt).format("DD MMM YYYY, hh:mm A")} className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
+                                        <Clock3 className="size-3.5" />
+                                        Added {dayjs(task.createdAt).fromNow()}
+                                    </span>
+                                    <span title={dayjs(task.updatedAt).format("DD MMM YYYY, hh:mm A")} className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
+                                        <RefreshCw className="size-3.5" />
+                                        Updated {dayjs(task.updatedAt).fromNow()}
+                                    </span>
+                                </div>
                             </div>
 
                             <div className="flex shrink-0 gap-2">
