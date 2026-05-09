@@ -8,10 +8,9 @@ import { connectDB } from "@/lib/db";
 import { headers } from "next/headers";
 import { Task } from "@/models/Task";
 import TaskStats from "@/components/TaskStats";
-import AddTask from "@/components/AddTask";
 import TasksList from "@/components/TasksList";
 
-const Dashboard = async () => {
+const Tasks = async () => {
     try {
         await connectDB();
         const session = await auth.api.getSession({
@@ -28,12 +27,9 @@ const Dashboard = async () => {
     return (
         <>
             <TaskStats />
-
-            <AddTask />
-
             <TasksList />
         </>
     );
 };
 
-export default Dashboard;
+export default Tasks;

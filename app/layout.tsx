@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import Link from "next/link";
-
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,19 +34,8 @@ export default function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
                     <div className="flex min-h-full flex-col">
                         <div className="flex-1">{children}</div>
-                        <footer className="mx-auto w-full max-w-6xl px-6 pb-8 sm:px-8">
-                            <p className="text-center text-sm text-foreground/60">
-                                Built by{" "}
-                                <Link
-                                    href="https://sumitdoescode.me"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:text-foreground"
-                                >
-                                    sumitdoescode
-                                </Link>
-                            </p>
-                        </footer>
+                        <Footer />
+                        <Toaster richColors />
                     </div>
                 </ThemeProvider>
             </body>

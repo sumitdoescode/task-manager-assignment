@@ -1,4 +1,5 @@
-import Dashboard from "@/components/Dashboard";
+import Tasks from "@/components/Tasks";
+import AddTask from "@/components/AddTask";
 
 export default async function DashboardPage() {
     return (
@@ -8,7 +9,8 @@ export default async function DashboardPage() {
                     <h1 className="text-3xl font-semibold">Dashboard</h1>
                     <p className="mt-2 text-sm text-foreground/65">Manage your tasks in one simple place.</p>
                 </header>
-                <Dashboard />
+                <AddTask />
+                <Tasks />
             </div>
         </main>
     );
