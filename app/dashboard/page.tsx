@@ -1,19 +1,11 @@
 import Tasks from "@/components/Tasks";
 import AddTask from "@/components/AddTask";
 import UserProfile from "@/components/UserProfile";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import UserProfileSkeleton from "@/components/UserProfileSkeleton";
+import TasksSkeleton from "@/components/TasksSkeleton";
+import { Suspense } from "react";
 
-export default async function DashboardPage() {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session?.user) {
-        return redirect("/");
-    }
-
+export default function DashboardPage() {
     return (
         <main className="bg-background text-foreground">
             <div className="mx-auto max-w-4xl px-6 py-10">
@@ -22,10 +14,14 @@ export default async function DashboardPage() {
                         <h1 className="text-3xl font-semibold">Dashboard</h1>
                         <p className="mt-2 text-sm text-foreground/65">Manage your tasks in one simple place.</p>
                     </div>
-                    <UserProfile user={session.user} />
+                    <Suspense fallback={<UserProfileSkeleton />}>
+                        <UserProfile />
+                    </Suspense>
                 </header>
                 <AddTask />
-                <Tasks />
+                <Suspense fallback={<TasksSkeleton />}>
+                    <Tasks />
+                </Suspense>
             </div>
         </main>
     );
