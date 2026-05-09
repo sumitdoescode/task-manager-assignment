@@ -19,7 +19,15 @@ const Tasks = async () => {
     }
 
     try {
-        taskList = await Task.find({ owner: session.user.id }).sort({ createdAt: -1 }).lean();
+        const tasks = await Task.find({ owner: session.user.id }).sort({ createdAt: -1 }).lean();
+        taskList = tasks.map((task) => ({
+            _id: String(task._id),
+            title: task.title,
+            description: task.description ?? "",
+            isCompleted: task.isCompleted,
+            createdAt: new Date(task.createdAt).toISOString(),
+            updatedAt: new Date(task.updatedAt).toISOString(),
+        }));
     } catch (error) {
         console.error(error);
     }

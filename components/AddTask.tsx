@@ -5,8 +5,10 @@ import axios from "axios";
 import { createTaskSchema } from "@/schemas/task.schema";
 import { flattenError } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const AddTask = () => {
+    const router = useRouter();
     const [taskData, setTaskData] = useState({
         title: "",
         description: "",
@@ -34,11 +36,16 @@ const AddTask = () => {
         try {
             await axios.post("/api/tasks", task);
 
+            toast.success("Task Added Successfully");
             setTaskData({
                 title: "",
                 description: "",
             });
-            toast.success("Task Added Successfully");
+            setError({
+                title: [],
+                description: [],
+            });
+            router.refresh();
         } catch (error) {
             console.error(error);
             toast.error("Failed to Add Task");

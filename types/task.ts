@@ -3,6 +3,6 @@ export interface ITask {
     title: string;
     description: string;
     isCompleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
