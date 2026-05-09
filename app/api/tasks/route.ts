@@ -6,23 +6,6 @@ import { headers } from "next/headers";
 import { createTaskSchema } from "@/schemas/task.schema";
 import { flattenError } from "zod";
 
-// GET => /api/tasks => Get all the tasks of logged in user
-export const GET = async (request: NextRequest) => {
-    try {
-        await connectDB();
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session || !session.user) {
-            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-        }
-        const tasks = await Task.find({ owner: session.user.id }).sort({ createdAt: -1 });
-        return NextResponse.json({ success: true, tasks });
-    } catch (error) {
-        return NextResponse.json({ success: false, error: error instanceof Error ? error.message : "Failed to fetch tasks" }, { status: 500 });
-    }
-};
-
 // POST => /api/tasks => Create a new task
 export const POST = async (request: NextRequest) => {
     try {
