@@ -19,14 +19,9 @@ export const PATCH = async (request: NextRequest, { params }: { params: Promise<
         if (!id || !isValidObjectId(id)) {
             return NextResponse.json({ success: false, error: "Invalid Task ID" }, { status: 400 });
         }
-        const task = await Task.findById(id);
+        const task = await Task.findOne({ _id: id, owner: session?.user?.id });
         if (!task) {
-            console.error("Toggle task failed: task not found", { id, userId: session.user.id });
-            return NextResponse.json({ success: false, error: "Task not found" }, { status: 404 });
-        }
-        if (task.owner !== session.user.id) {
-            console.error("Toggle task failed: owner mismatch", { id, taskOwner: task.owner, userId: session.user.id });
-            return NextResponse.json({ success: false, error: "You are not authorized to update this task" }, { status: 403 });
+            return NextResponse.json({ success: false, error: "Task not found or you are not authorized to update it" }, { status: 404 });
         }
         task.isCompleted = !task.isCompleted;
         await task.save();
@@ -50,16 +45,10 @@ export const DELETE = async (request: NextRequest, { params }: { params: Promise
         if (!id || !isValidObjectId(id)) {
             return NextResponse.json({ success: false, error: "Invalid Task ID" }, { status: 400 });
         }
-        const task = await Task.findById(id);
+        const task = await Task.findOneAndDelete({ _id: id, owner: session?.user?.id });
         if (!task) {
-            console.error("Delete task failed: task not found", { id, userId: session.user.id });
-            return NextResponse.json({ success: false, error: "Task not found" }, { status: 404 });
+            return NextResponse.json({ success: false, error: "Task not found or you are not authorized to delete it" }, { status: 404 });
         }
-        if (task.owner !== session.user.id) {
-            console.error("Delete task failed: owner mismatch", { id, taskOwner: task.owner, userId: session.user.id });
-            return NextResponse.json({ success: false, error: "You are not authorized to delete this task" }, { status: 403 });
-        }
-        await task.deleteOne();
         return NextResponse.json({ success: true, message: "Task deleted successfully" }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ success: false, error: error instanceof Error ? error.message : "Failed to delete task" }, { status: 500 });

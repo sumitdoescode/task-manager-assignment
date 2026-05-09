@@ -1,9 +1,8 @@
-import { redirect } from "next/navigation";
-
 import Tasks from "@/components/Tasks";
 import AddTask from "@/components/AddTask";
-import DashboardUserProfile from "@/components/DashboardUserProfile";
+import UserProfile from "@/components/UserProfile";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 export default async function DashboardPage() {
@@ -23,7 +22,7 @@ export default async function DashboardPage() {
                         <h1 className="text-3xl font-semibold">Dashboard</h1>
                         <p className="mt-2 text-sm text-foreground/65">Manage your tasks in one simple place.</p>
                     </div>
-                    <DashboardUserProfile user={session.user} />
+                    <UserProfile user={session.user} />
                 </header>
                 <AddTask />
                 <Tasks />

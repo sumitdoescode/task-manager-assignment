@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LogoutButton from "@/components/LogoutButton";
 
-const DashboardUserProfile = ({ user }: { user: { name: string; image?: string | null; email: string } }) => {
+const UserProfile = ({ user }: { user: { name: string; image?: string | null; email: string } }) => {
     return (
         <div className="flex items-center gap-3 rounded-lg border border-border px-3 py-2">
             <Avatar className="size-10 border border-border">
@@ -19,4 +19,4 @@ const DashboardUserProfile = ({ user }: { user: { name: string; image?: string |
     );
 };
 
-export default DashboardUserProfile;
+export default UserProfile;
